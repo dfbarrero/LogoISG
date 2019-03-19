@@ -1,0 +1,83 @@
+\documentclass[border=0pt]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage{fix-cm}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{calc, arrows, intersections}
+
+\title{Logo ISG}
+
+%%%% DESCOMENTAR ESQUEMA DE COLORES DESEADO %%%%%
+% Fondo a color
+\definecolor{fondo}{RGB}{35,43,67}
+\definecolor{fuente}{RGB}{255,255,255}
+
+\definecolor{fuente}{RGB}{35,43,67}
+\definecolor{fondo}{RGB}{255,255,255}
+
+
+% Blanco y negro
+%\definecolor{fondo}{RGB}{255,255,255}
+%\definecolor{fuente}{RGB}{0,0,0}
+
+% Negativo
+%\definecolor{fondo}{RGB}{0,0,0}
+%\definecolor{fuente}{RGB}{255,255,255}
+%%%%%%%%%%
+\begin{document}
+
+\tikzstyle{circulo}=[draw, circle, inner sep=0, minimum width=1cm] % minimum width contiene el diametro del nodo, debe ser el doble que la orden arc
+
+\begin{tikzpicture}[line width=4.5pt, cap=round, fuente]
+%\draw[help lines] (-3,-3) grid (10,3);
+
+\draw[fill=fondo, fondo] (-3,-3) rectangle (10,3);
+
+\path 	(0,0) coordinate (centro)
+		(90:2) coordinate (arriba) 
+		(-30:2) coordinate (derecha) 
+		(210:2) coordinate (izquierda);
+
+% Dibujamos círculos
+\draw[name path=arcocentro] (45:1) arc[radius=1cm, start angle=45, end angle= 385];
+\node[circulo, name path=arcoarriba] (arribanodo) at (arriba) {};
+\draw[name path=arcoizquierda] (izquierda) ++(-45:0.5) arc[radius=0.5cm, start angle=-45, end angle= 280];
+\node[circulo, name path=arcoderecha] (derechanodo) at (derecha) {};
+
+% Unimos centro de círculos
+\path[name path=lineaarriba] (arribanodo) -- (centro);
+\fill [name intersections={of= arcocentro and lineaarriba}] (intersection-1) coordinate (puntoA);
+\draw (arribanodo.south) -- (puntoA);
+
+\path[name path=lineaizquierda] (centro) -- (izquierda);
+\fill [name intersections={of= arcoizquierda and lineaizquierda}] (intersection-1) coordinate (puntoI);
+\path (centro) -- (puntoI) coordinate[pos=0.45] (cutI);
+\draw (puntoI) -- (cutI);
+
+\path[thin, name path=lineaderecha] (centro) -- (derecha);
+\fill [name intersections={of= arcoderecha and lineaderecha}] (intersection-1) coordinate (puntoD);
+\path (centro) -- (puntoD) coordinate[pos=0.45] (cutD);
+\draw (puntoD) -- (cutD);
+
+% Líneas de ayuda
+%\fill [green] (puntoD) circle (2pt);
+%\fill [green] (puntoI) circle (2pt);
+%\fill [green] (puntoA) circle (2pt);
+
+%\fill [red] (arriba) circle (2pt);
+%\fill [red] (izquierda) circle (2pt);
+%\fill [red] (derecha) circle (2pt);
+%\fill [red] (centro) circle (2pt);
+%\draw[thin] (0,0) -- (45:2);
+%\draw[thin] (0,0) -- (30:2);
+%\draw[thin] (izquierda) -- ++(-45:2);
+%\draw[thin] (izquierda) -- ++(-70:2);
+
+% Texto
+\node at (5.5,0.25) (isg) {\fontsize{100}{200}\selectfont \textls[100]{ISG}};
+\path (derechanodo.south -| isg) coordinate (A);
+\draw[thin] (A) ++(-1.5,0) -- ++(3,0);
+\node[below of = A, yshift=0.3cm] (texto) {\fontsize{18}{80}\selectfont \textls[100]{Intelligent Systems Group}};
+
+\end{tikzpicture}
+\end{document}
